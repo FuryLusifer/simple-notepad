@@ -3,8 +3,9 @@
 
 import os
 
-# A welcome message
-print("\n********** Welcome to my Notepad **********\n")
+def show_welcome_message():
+    # A welcome message
+    print("\n********** Welcome to my Notepad **********\n")
 
 def show_menu():
     print("------- Menu --------")
@@ -15,27 +16,9 @@ def show_menu():
     print("4. Delete a note")
     print("5. Exit")
 
-# looping to keep showing the menu and taking user choice.
-while True:
-    # showing the menu
-    show_menu()
-
-    # Asking for user choice
-    choice = input("Enter your choice: ")
-
-    # acting on user choices
-    if choice == '5':
-        print("See you next time.")
-        break
-
-
-    elif choice == '1':
-        # print("You chose option 1.")
-        filename = input("Enter the filename to create: ").strip()
-        if not filename:
-            print("filename cannot be empty!!!\n")
-            continue
-
+def create_note():
+    filename = input("Enter the filename to create: ").strip()
+    if filename:
         print("Start typing your note (type SAVE to finish): ")
         content = ''
 
@@ -48,22 +31,42 @@ while True:
         with open(filename, 'w') as file:
             file.write(content)
             print(f"Your note has been saved in file '{filename}'.")
+    else:
+        print("Filename cannot be empty")
 
-    
+def read_note():
+    filename = input("Enter the filename to read: ").strip()
+    if os.path.exists(filename):
+        with open(filename, 'r') as file:
+            print(f"------ Contents of {filename} ------")
+            content = file.read()
+            if not content:
+                print("The note is empty.")
+            else:
+                print(content)
+
+    else:
+        print("File does not exist.")
+
+# looping to keep showing the menu and taking user choice.
+while True:
+    show_welcome_message()
+    # showing the menu
+    show_menu()
+
+    # Asking for user choice
+    choice = input("Enter your choice: ")
+
+    # acting on user choices
+    if choice == '5':
+        print("See you next time.")
+        break
+
+    elif choice == '1':
+        create_note()
+
     elif choice == '2':
-        # print("You chose option 2.")
-        filename = input("Enter the filename to read: ").strip()
-        if os.path.exists(filename):
-            with open(filename, 'r') as file:
-                print(f"------ Contents of {filename} ------")
-                content = file.read()
-                if not content:
-                    print("The note is empty.")
-                else:
-                    print(f"\n{content}")
-                print()
-        else:
-            print("File does not exist.")
+        read_note()   
 
 
     elif choice == '3':
@@ -107,6 +110,3 @@ while True:
             print("File does not exist.")    
     else:
         print("Wrong input! Choose again!!")
-    
-    # adding a empty line
-    print()
